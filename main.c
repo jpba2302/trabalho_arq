@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 struct Matriz {
     int **dados;
@@ -9,6 +10,12 @@ struct Matriz {
     int max;
 };
 typedef struct Matriz Matriz;
+
+struct Nodo {
+    char caractere;
+    int frequencia;
+};
+typedef struct Nodo Nodo;
 
 /**
  * Aloca memória para uma matriz e preenche com valores aleatórios até max
@@ -141,9 +148,32 @@ int copia_arquivo (char* arquivo_origem, char* arquivo_destino)
     fclose(arq_des);
 }
 
+/**
+ * Usa o bubblesort para ordenar uma string
+ */
+
+void ordena_string (char *s)
+{
+    int i, j;
+    int tamanho = strlen(s);
+    for (i = 0;i < tamanho - 1;i++)
+    {
+        for (j = 0;j < tamanho - 1;j++)
+        {
+            if (s[j] > s[j + 1])
+            {
+                char aux = s[j];
+                s[j] = s[j + 1];
+                s[j + 1] = aux;
+            }
+        }
+    }
+}
+
 int main() {
 
      //MULTIPLICAÇÃO DE MATRIZES
+     /*
     srand(time(NULL));
     int largura = 3;
     int altura = 3;
@@ -154,10 +184,17 @@ int main() {
     imprime_matriz(matriz_2);
     Matriz *matriz_3 = multiplica_matriz(matriz_1, matriz_2);
     imprime_matriz(matriz_3);
-
+    */
 
     //copia_arquivo("capa_archangels.png","copia.png");
 
+    char *palavra;
+    printf("Digite uma palavra: ");
+    fgets(palavra,30,stdin);
+
+    ordena_string(palavra);
+    printf("aq\n");
+    printf("%s",palavra);
 
     return 0;
 }
