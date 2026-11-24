@@ -81,25 +81,6 @@ void imprime_matriz (Matriz *matriz)
 }
 
 /**
- * Multiplica os elementos da linha de uma matriz com os respectivos da coluna de outra matriz e soma todos
- * @param matriz_1 matriz que contém os elementos da linha
- * @param matriz_2 matriz que contém os elementos da coluna
- * @param i índice da linha a ser multiplicada
- * @param j índice da coluna a ser multiplicada
- */
-
-int multiplica_linha_coluna (Matriz *matriz_1, Matriz *matriz_2, int i, int j)
-{
-    int k; // colunas da matriz_1 e linhas da matriz_2
-    int resultado = 0;
-    for (k = 0;k < matriz_1->largura;k++)
-    {
-        resultado = (matriz_1->dados[i][k] * matriz_2->dados[k][j]) + resultado;
-    }
-    return resultado;
-}
-
-/**
  * Cria uma matriz e preenche ela com os valores da multiplicação da matriz_1 com a matriz_2
  * @param matriz_1 matriz que contém as linhas que serão multiplicadas
  * @param matriz_2 matriz que contém as colunas que serão multiplicadas
@@ -114,10 +95,17 @@ Matriz *multiplica_matriz (Matriz *matriz_1, Matriz *matriz_2)
     }
 
     Matriz *matriz_3 = cria_matriz(matriz_1->largura, matriz_1->altura, matriz_1->max);
-    int i, j;
-    for (i = 0;i < matriz_1->altura;i++) {
-        for (j = 0;j < matriz_2->largura;j++) {
-            matriz_3->dados[i][j] = multiplica_linha_coluna(matriz_1, matriz_2, i, j);
+    int i, j, k;
+    for (i = 0;i < matriz_1->altura;i++)
+    {
+        for (j = 0;j < matriz_2->largura;j++)
+        {
+                int resultado = 0;
+                for (k = 0;k < matriz_1->largura;k++)
+                {
+                    resultado = (matriz_1->dados[i][k] * matriz_2->dados[k][j]) + resultado;
+                }
+                matriz_3->dados[i][j] = resultado;
         }
     }
     return matriz_3;
@@ -155,10 +143,10 @@ int copia_arquivo (char* arquivo_origem, char* arquivo_destino)
 
 int main() {
 
-    /* MULTIPLICAÇÃO DE MATRIZES
+     //MULTIPLICAÇÃO DE MATRIZES
     srand(time(NULL));
-    int largura = 500;
-    int altura = 500;
+    int largura = 3;
+    int altura = 3;
     int valor_max = 3;
     Matriz *matriz_1 = cria_matriz(largura, altura, valor_max);
     Matriz *matriz_2 = cria_matriz(largura, altura, valor_max);
@@ -166,9 +154,9 @@ int main() {
     imprime_matriz(matriz_2);
     Matriz *matriz_3 = multiplica_matriz(matriz_1, matriz_2);
     imprime_matriz(matriz_3);
-    */
 
-    copia_arquivo("capa_archangels.png","copia.png");
+
+    //copia_arquivo("capa_archangels.png","copia.png");
 
 
     return 0;
