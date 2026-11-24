@@ -14,6 +14,8 @@ typedef struct Matriz Matriz;
 struct Nodo {
     char caractere;
     int frequencia;
+    struct Nodo *esquerda;
+    struct Nodo *direita;
 };
 typedef struct Nodo Nodo;
 
@@ -170,6 +172,75 @@ void ordena_string (char *s)
     }
 }
 
+/**
+ * Cria um nodo sem filhos e preenche com o caractere que ele representa e a frequência desse caractere em uma string
+ */
+
+Nodo *cria_nodo (char caractere, int frequencia)
+{
+    Nodo *aux = NULL;
+    aux = (Nodo*)malloc(sizeof(Nodo));
+    if (aux == NULL)
+    {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+    aux->caractere = caractere;
+    aux->frequencia = frequencia;
+    aux->esquerda = NULL;
+    aux->direita = NULL;
+}
+
+/**
+ * INCOMPLETO!!!
+ */
+
+void conta_caracteres (char *s)
+{
+    int tamanho = strlen(s);
+    int i = 0;
+    int frequencia = 0;
+    char letra = s[i];
+    char letra_aux = s[i];
+    letra = s[0];
+    while (i < tamanho)
+    {
+        while (letra == letra_aux)
+        {
+            frequencia++;
+            i++;
+            letra_aux = s[i];
+        }
+        cria_nodo(letra, frequencia);
+        letra = s[i];
+        frequencia = 0;
+    }
+}
+
+/**
+ * Recebe uma string ordenada e conta quantos caracteres diferentes ela tem
+ * NÃO VAI SER USADA PROVAVELMENTE SÓ PRA TESTAR
+ */
+
+int conta_caracteres_diferentes (char *s)
+{
+    int tamanho = strlen(s);
+    int i = 0;
+    char letra = s[i];
+    char letra_aux = s[i];
+    int caracteres_diferentes = 0;
+    for (i = 0;i < tamanho;i++)
+    {
+        letra_aux = s[i];
+        if (letra != letra_aux)
+        {
+            letra = s[i];
+            caracteres_diferentes++;
+        }
+    }
+    return caracteres_diferentes;
+}
+
 int main() {
 
      //MULTIPLICAÇÃO DE MATRIZES
@@ -193,8 +264,9 @@ int main() {
     fgets(palavra,30,stdin);
 
     ordena_string(palavra);
-    printf("aq\n");
-    printf("%s",palavra);
+    printf("%s\n",palavra);
+    int diferentes = conta_caracteres_diferentes(palavra);
+    printf("%d\n",diferentes);
 
     return 0;
 }
