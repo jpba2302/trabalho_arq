@@ -123,8 +123,39 @@ Matriz *multiplica_matriz (Matriz *matriz_1, Matriz *matriz_2)
     return matriz_3;
 }
 
+int copia_arquivo (char* arquivo_origem, char* arquivo_destino)
+{
+    FILE *arq_ori;
+    FILE *arq_des;
+    arq_ori = fopen(arquivo_origem,"rb");
+    if (arq_ori == NULL)
+    {
+        printf("Erro ao abrir o arquivo\n");
+        return 1;
+    }
+    arq_des = fopen(arquivo_destino,"wb");
+    if (arq_des == NULL)
+    {
+        printf("Erro ao abrir o arquivo\n");
+        fclose(arq_ori);
+        return 1;
+    }
+    fseek(arq_ori,0,SEEK_END);
+    int tamanho = ftell(arq_ori);
+    fseek(arq_ori,0,SEEK_SET);
+    int i;
+    for (i = 0;i < tamanho;i++)
+    {
+        int bin = fgetc(arq_ori);
+        fputc(bin, arq_des);
+    }
+    fclose(arq_ori);
+    fclose(arq_des);
+}
+
 int main() {
 
+    /* MULTIPLICAÇÃO DE MATRIZES
     srand(time(NULL));
     int largura = 500;
     int altura = 500;
@@ -135,6 +166,10 @@ int main() {
     imprime_matriz(matriz_2);
     Matriz *matriz_3 = multiplica_matriz(matriz_1, matriz_2);
     imprime_matriz(matriz_3);
+    */
+
+    copia_arquivo("capa_archangels.png","copia.png");
+
 
     return 0;
 }
