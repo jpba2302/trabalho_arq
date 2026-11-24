@@ -1,0 +1,140 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+struct Matriz {
+    int **dados;
+    int altura;
+    int largura;
+    int max;
+};
+typedef struct Matriz Matriz;
+
+/**
+ * Aloca memória para uma matriz e preenche com valores aleatórios até max
+ * @param largura largura da matriz
+ * @param altura altura da matriz
+ * @param max valor máximo que pode ser gerado aleatoriamente
+ * @return NULL se não for possível alocar memória ou matriz com posições preenchidas
+ */
+
+int **cria_dados_matriz (int largura, int altura, int max)
+{
+
+    int **dados = NULL;
+    dados = (int**)malloc(sizeof(int*)*altura);
+    if (dados == NULL) {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+
+    int i, j;
+    for (i = 0;i < altura;i++) {
+        dados[i] = (int*)malloc(sizeof(int)*largura);
+    }
+
+    for (i = 0;i < altura;i++) {
+        for (j = 0;j < largura;j++) {
+            dados[i][j] = rand() % max;
+        }
+    }
+
+    return dados;
+}
+
+/**
+ * Cria uma matriz completa com os dados preenchidos
+ * @param largura largura da matriz
+ * @param altura altura da matriz
+ * @param max valor máximo das posições da matriz
+ * @return Matriz preenchida ou NULL caso a alocação falhar
+ */
+
+Matriz *cria_matriz (int largura, int altura, int max)
+{
+    Matriz *aux = NULL;
+    aux = (Matriz*)malloc(sizeof(Matriz));
+    if (aux == NULL) {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+    aux->largura = largura;
+    aux->altura = altura;
+
+    aux->dados = cria_dados_matriz(largura, altura, max);
+
+    return aux;
+}
+
+void imprime_matriz (Matriz *matriz)
+{
+    int i, j;
+    for (i = 0;i < matriz->altura;i++)
+    {
+        for (j = 0;j < matriz->largura;j++)
+        {
+            printf("|%d|",matriz->dados[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+/**
+ * Multiplica os elementos da linha de uma matriz com os respectivos da coluna de outra matriz e soma todos
+ * @param matriz_1 matriz que contém os elementos da linha
+ * @param matriz_2 matriz que contém os elementos da coluna
+ * @param i índice da linha a ser multiplicada
+ * @param j índice da coluna a ser multiplicada
+ */
+
+int multiplica_linha_coluna (Matriz *matriz_1, Matriz *matriz_2, int i, int j)
+{
+    int k; // colunas da matriz_1 e linhas da matriz_2
+    int resultado = 0;
+    for (k = 0;k < matriz_1->largura;k++)
+    {
+        resultado = (matriz_1->dados[i][k] * matriz_2->dados[k][j]) + resultado;
+    }
+    return resultado;
+}
+
+/**
+ * Cria uma matriz e preenche ela com os valores da multiplicação da matriz_1 com a matriz_2
+ * @param matriz_1 matriz que contém as linhas que serão multiplicadas
+ * @param matriz_2 matriz que contém as colunas que serão multiplicadas
+ */
+
+Matriz *multiplica_matriz (Matriz *matriz_1, Matriz *matriz_2)
+{
+    if (matriz_1->altura != matriz_2->altura || matriz_1->largura != matriz_2->largura)
+    {
+        printf("Impossível multiplicar essas duas matrizes\n");
+        return NULL;
+    }
+
+    Matriz *matriz_3 = cria_matriz(matriz_1->largura, matriz_1->altura, matriz_1->max);
+    int i, j;
+    for (i = 0;i < matriz_1->altura;i++) {
+        for (j = 0;j < matriz_2->largura;j++) {
+            matriz_3->dados[i][j] = multiplica_linha_coluna(matriz_1, matriz_2, i, j);
+        }
+    }
+    return matriz_3;
+}
+
+int main() {
+
+    srand(time(NULL));
+    int largura = 500;
+    int altura = 500;
+    int valor_max = 3;
+    Matriz *matriz_1 = cria_matriz(largura, altura, valor_max);
+    Matriz *matriz_2 = cria_matriz(largura, altura, valor_max);
+    imprime_matriz(matriz_1);
+    imprime_matriz(matriz_2);
+    Matriz *matriz_3 = multiplica_matriz(matriz_1, matriz_2);
+    imprime_matriz(matriz_3);
+
+    return 0;
+}
