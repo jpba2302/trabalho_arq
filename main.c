@@ -14,8 +14,6 @@ typedef struct Matriz Matriz;
 struct Nodo {
     char caractere;
     int frequencia;
-    struct Nodo *esquerda;
-    struct Nodo *direita;
 };
 typedef struct Nodo Nodo;
 
@@ -187,18 +185,17 @@ Nodo *cria_nodo (char caractere, int frequencia)
     }
     aux->caractere = caractere;
     aux->frequencia = frequencia;
-    aux->esquerda = NULL;
-    aux->direita = NULL;
 }
 
 /**
  * INCOMPLETO!!!
  */
 
-void conta_caracteres (char *s)
+void conta_caracteres (char *s, Nodo **vet)
 {
     int tamanho = strlen(s);
     int i = 0;
+    int j = 0; // contador do vetor
     int frequencia = 0;
     char letra = s[i];
     char letra_aux = s[i];
@@ -211,7 +208,9 @@ void conta_caracteres (char *s)
             i++;
             letra_aux = s[i];
         }
-        cria_nodo(letra, frequencia);
+        Nodo *aux = cria_nodo(letra, frequencia);
+        vet[j] = aux;
+        j++;
         letra = s[i];
         frequencia = 0;
     }
@@ -228,7 +227,7 @@ int conta_caracteres_diferentes (char *s)
     int i = 0;
     char letra = s[i];
     char letra_aux = s[i];
-    int caracteres_diferentes = 0;
+    int caracteres_diferentes = 1;
     for (i = 0;i < tamanho;i++)
     {
         letra_aux = s[i];
@@ -239,6 +238,28 @@ int conta_caracteres_diferentes (char *s)
         }
     }
     return caracteres_diferentes;
+}
+
+Nodo **cria_vetor_nodos (int tamanho)
+{
+    Nodo **aux = NULL;
+    aux = (Nodo**)malloc(sizeof(Nodo*)*tamanho);
+    if (aux == NULL)
+    {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+    return aux;
+}
+
+void imprime_vetor_nodos (Nodo **vet, int tamanho)
+{
+    int i;
+    for (i = 0;i < tamanho;i++)
+    {
+        printf("|%c %d| ",vet[i]->caractere, vet[i]->frequencia);
+    }
+    printf("\n");
 }
 
 int main() {
@@ -262,11 +283,14 @@ int main() {
     char *palavra;
     printf("Digite uma palavra: ");
     fgets(palavra,30,stdin);
+    palavra[strcspn(palavra, "\n")] = '\0';
 
     ordena_string(palavra);
+    printf("%d",conta_caracteres_diferentes(palavra));
     printf("%s\n",palavra);
-    int diferentes = conta_caracteres_diferentes(palavra);
-    printf("%d\n",diferentes);
+    Nodo **vet = cria_vetor_nodos(conta_caracteres_diferentes(palavra));
+    conta_caracteres(palavra, vet);
+    imprime_vetor_nodos(vet, conta_caracteres_diferentes(palavra));
 
     return 0;
 }
