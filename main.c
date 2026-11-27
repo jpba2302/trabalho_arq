@@ -202,6 +202,16 @@ Nodo *cria_vetor_de_nodos(int tamanho)
     return aux;
 }
 
+void imprime_vetor(Nodo *vet, int tamanho)
+{
+    int i;
+    for (i = 0;i < tamanho;i++)
+    {
+        printf("|%c %d| ",vet[i].caractere, vet[i].frequencia);
+    }
+    printf("\n");
+}
+
 void preenche_vetor(Nodo *vet, char *s)
 {
     int tamanho = strlen(s);
@@ -209,7 +219,7 @@ void preenche_vetor(Nodo *vet, char *s)
     int j = 0;
     char aux = s[0];
     char aux_2 = s[0];
-    int frequencia = 1;
+    int frequencia = 0;
     for (i = 0;i < tamanho;i++)
     {
         aux_2 = s[i];
@@ -217,11 +227,17 @@ void preenche_vetor(Nodo *vet, char *s)
         {
             vet[j].caractere = aux;
             vet[j].frequencia = frequencia;
-            frequencia = 1;
+            frequencia = 0;
             aux = aux_2;
+            j++;
         }
+        frequencia++;
     }
+    vet[j].caractere = aux;
+    vet[j].frequencia = frequencia;
 }
+
+
 
 int main() {
 
@@ -252,6 +268,7 @@ int main() {
     int tamanho = conta_caracteres_diferentes(palavra);
     Nodo *vetor = cria_vetor_de_nodos(tamanho);
     preenche_vetor(vetor, palavra);
+    imprime_vetor(vetor, conta_caracteres_diferentes(palavra));
 
     return 0;
 }
