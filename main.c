@@ -237,6 +237,22 @@ void preenche_vetor(Nodo *vet, char *s)
     vet[j].frequencia = frequencia;
 }
 
+void ordena_vetor(Nodo *vet, int tamanho)
+{
+    int i, j;
+    for (i = 0;i < tamanho - 1;i++)
+    {
+        for (j = 0;j < tamanho - 1;j++)
+        {
+            if (vet[j].frequencia > vet[j + 1].frequencia)
+            {
+                Nodo aux = vet[j];
+                vet[j] = vet[j + 1];
+                vet[j + 1] = aux;
+            }
+        }
+    }
+}
 
 
 int main() {
@@ -268,6 +284,8 @@ int main() {
     int tamanho = conta_caracteres_diferentes(palavra);
     Nodo *vetor = cria_vetor_de_nodos(tamanho);
     preenche_vetor(vetor, palavra);
+    imprime_vetor(vetor, conta_caracteres_diferentes(palavra));
+    ordena_vetor(vetor, conta_caracteres_diferentes(palavra));
     imprime_vetor(vetor, conta_caracteres_diferentes(palavra));
 
     return 0;
