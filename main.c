@@ -177,6 +177,7 @@ int conta_caracteres_diferentes (char *s)
     int caracteres = 1;
     int tamanho = strlen(s);
     int i;
+
     for (i = 0;i < tamanho;i++)
     {
         aux_2 = s[i];
@@ -186,8 +187,19 @@ int conta_caracteres_diferentes (char *s)
             aux = aux_2;
         }
     }
-    printf("%d",caracteres);
     return caracteres;
+}
+
+Nodo *cria_vetor_de_nodos(int tamanho)
+{
+    Nodo *aux = NULL;
+    aux = (Nodo*)malloc(sizeof(Nodo)*tamanho);
+    if (aux == NULL)
+    {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+    return aux;
 }
 
 int main() {
@@ -208,14 +220,16 @@ int main() {
 
     //copia_arquivo("capa_archangels.png","copia.png");
 
-    char *palavra;
+    char palavra[100];
     printf("Digite uma palavra: ");
-    fgets(palavra,30,stdin);
+    fgets(palavra,100,stdin);
     palavra[strcspn(palavra, "\n")] = '\0';
 
     ordena_string(palavra);
     printf("%s\n",palavra);
-    conta_caracteres_diferentes(palavra);
+
+    int tamanho = conta_caracteres_diferentes(palavra);
+    Nodo *vetor = cria_vetor_de_nodos(tamanho);
 
     return 0;
 }
