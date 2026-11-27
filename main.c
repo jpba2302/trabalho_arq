@@ -202,6 +202,27 @@ Nodo *cria_vetor_de_nodos(int tamanho)
     return aux;
 }
 
+void preenche_vetor(Nodo *vet, char *s)
+{
+    int tamanho = strlen(s);
+    int i;
+    int j = 0;
+    char aux = s[0];
+    char aux_2 = s[0];
+    int frequencia = 1;
+    for (i = 0;i < tamanho;i++)
+    {
+        aux_2 = s[i];
+        if (aux != aux_2)
+        {
+            vet[j].caractere = aux;
+            vet[j].frequencia = frequencia;
+            frequencia = 1;
+            aux = aux_2;
+        }
+    }
+}
+
 int main() {
 
      //MULTIPLICAÇÃO DE MATRIZES
@@ -230,6 +251,7 @@ int main() {
 
     int tamanho = conta_caracteres_diferentes(palavra);
     Nodo *vetor = cria_vetor_de_nodos(tamanho);
+    preenche_vetor(vetor, palavra);
 
     return 0;
 }
