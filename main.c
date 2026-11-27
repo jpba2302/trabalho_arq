@@ -170,96 +170,24 @@ void ordena_string (char *s)
     }
 }
 
-/**
- * Cria um nodo sem filhos e preenche com o caractere que ele representa e a frequência desse caractere em uma string
- */
-
-Nodo *cria_nodo (char caractere, int frequencia)
-{
-    Nodo *aux = NULL;
-    aux = (Nodo*)malloc(sizeof(Nodo));
-    if (aux == NULL)
-    {
-        printf("Erro ao alocar memória\n");
-        return NULL;
-    }
-    aux->caractere = caractere;
-    aux->frequencia = frequencia;
-}
-
-/**
- * INCOMPLETO!!!
- */
-
-void conta_caracteres (char *s, Nodo **vet)
-{
-    int tamanho = strlen(s);
-    int i = 0;
-    int j = 0; // contador do vetor
-    int frequencia = 0;
-    char letra = s[i];
-    char letra_aux = s[i];
-    letra = s[0];
-    while (i < tamanho)
-    {
-        while (letra == letra_aux)
-        {
-            frequencia++;
-            i++;
-            letra_aux = s[i];
-        }
-        Nodo *aux = cria_nodo(letra, frequencia);
-        vet[j] = aux;
-        j++;
-        letra = s[i];
-        frequencia = 0;
-    }
-}
-
-/**
- * Recebe uma string ordenada e conta quantos caracteres diferentes ela tem
- * NÃO VAI SER USADA PROVAVELMENTE SÓ PRA TESTAR
- */
-
 int conta_caracteres_diferentes (char *s)
 {
+    char aux = s[0];
+    char aux_2 = s[0];
+    int caracteres = 1;
     int tamanho = strlen(s);
-    int i = 0;
-    char letra = s[i];
-    char letra_aux = s[i];
-    int caracteres_diferentes = 1;
-    for (i = 0;i < tamanho;i++)
-    {
-        letra_aux = s[i];
-        if (letra != letra_aux)
-        {
-            letra = s[i];
-            caracteres_diferentes++;
-        }
-    }
-    return caracteres_diferentes;
-}
-
-Nodo **cria_vetor_nodos (int tamanho)
-{
-    Nodo **aux = NULL;
-    aux = (Nodo**)malloc(sizeof(Nodo*)*tamanho);
-    if (aux == NULL)
-    {
-        printf("Erro ao alocar memória\n");
-        return NULL;
-    }
-    return aux;
-}
-
-void imprime_vetor_nodos (Nodo **vet, int tamanho)
-{
     int i;
     for (i = 0;i < tamanho;i++)
     {
-        printf("|%c %d| ",vet[i]->caractere, vet[i]->frequencia);
+        aux_2 = s[i];
+        if (aux != aux_2)
+        {
+            caracteres++;
+            aux = aux_2;
+        }
     }
-    printf("\n");
+    printf("%d",caracteres);
+    return caracteres;
 }
 
 int main() {
@@ -286,11 +214,8 @@ int main() {
     palavra[strcspn(palavra, "\n")] = '\0';
 
     ordena_string(palavra);
-    printf("%d",conta_caracteres_diferentes(palavra));
     printf("%s\n",palavra);
-    Nodo **vet = cria_vetor_nodos(conta_caracteres_diferentes(palavra));
-    conta_caracteres(palavra, vet);
-    imprime_vetor_nodos(vet, conta_caracteres_diferentes(palavra));
+    conta_caracteres_diferentes(palavra);
 
     return 0;
 }
